@@ -35,11 +35,17 @@ public class Racun {
 	public void setBroj(String broj) {
 		this.broj = broj;
 	}
+	public Banka getBanka() {
+		return banka;
+	}
 	public BigDecimal getStanje() {
 		return stanje.subtract(rezervacije.getUkupanIznos());
 	}
 	public void setStanje(BigDecimal stanje) {
 		this.stanje = stanje;
+	}
+	public Presjek getPresjek() {
+		return presjek;
 	}
 	public Rezervacije getRezervacije() {
 		return rezervacije;
