@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://www.nepostoji.org/PaymentService/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	name="PaymentService" 
+	targetNamespace="http://www.nepostoji.org/PaymentService/"
+	xmlns:nalp="http://www.example.org/NalogZaPlacanje"
+	xmlns:pres="http://www.example.org/Presjek"
+	xmlns:zaht="http://www.example.org/ZahtijevZaIzvodom"
+	xmlns:mt102="http://www.example.org/MT102"
+	xmlns:mt103="http://www.example.org/MT103"
+	xmlns:mt910="http://www.example.org/MT910"
+	xmlns:odg="http://www.example.org/Odgovor">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.nepostoji.org/PaymentService/">
+      <xsd:import schemaLocation="./../../schema/NalogZaPlacanje.xsd" namespace="http://www.example.org/NalogZaPlacanje"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/Presjek.xsd" namespace="http://www.example.org/Presjek"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/ZahtijevZaIzvodom.xsd" namespace="http://www.example.org/ZahtijevZaIzvodom"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/MT102.xsd" namespace="http://www.example.org/MT102"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/MT103.xsd" namespace="http://www.example.org/MT103"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/MT910.xsd" namespace="http://www.example.org/MT910"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/Odgovor.xsd" namespace="http://www.example.org/Odgovor"></xsd:import>
+      <xsd:complexType name="PorukaOdobrenjaRtgs">
+      	<xsd:sequence>
+      	  <xsd:element ref="mt910:mt910"></xsd:element>
+      	  <xsd:element ref="mt103:mt103"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PorukaOdobrenjaClearing">
+      	<xsd:sequence>
+      	  <xsd:element ref="mt910:mt910"></xsd:element>
+      	  <xsd:element ref="mt102:mt102"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Odgovor">
+        <xsd:sequence>
+          <xsd:element name="odgovor" type="odg:Odgovor"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PorukaZahtijevaPresjeka">
+      	<xsd:sequence>
+      	  <xsd:element ref="zaht:zahtijev"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PorukaNalogaPlacanja">
+      	<xsd:sequence>
+      	  <xsd:element ref="nalp:nalog"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PorukaPresjeka">
+      	<xsd:sequence>
+      	  <xsd:element ref="pres:presjek"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PogonskaPoruka">
+        <xsd:sequence>
+          <xsd:element name="poruka" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="obradiNalog" type="tns:PorukaNalogaPlacanja"></xsd:element>
+      <xsd:element name="prikaziPresjek" type="tns:PorukaZahtijevaPresjeka"></xsd:element>
+      <xsd:element name="prikaziPresjekResponse" type="tns:PorukaPresjeka"></xsd:element>
+      <xsd:element name="odobriSredstvaRtgs" type="tns:PorukaOdobrenjaRtgs"></xsd:element>
+      <xsd:element name="odobriSredstvaClearing" type="tns:PorukaOdobrenjaClearing"></xsd:element>
+      <xsd:element name="odgovor" type="tns:Odgovor"></xsd:element>
+      <xsd:element name="pogonskaPoruka" type="tns:PogonskaPoruka"></xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="obradiNalog">
+  	<wsdl:part name="parameters" element="tns:obradiNalog"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="obradiNalogResponse">
+  	<wsdl:part name="parameters" element="tns:odgovor"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="prikaziPresjek">
+  	<wsdl:part name="parameters" element="tns:prikaziPresjek"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="prikaziPresjekResponse">
+  	<wsdl:part name="parameters" element="tns:prikaziPresjekResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="prikaziPresjekFault">
+    <wsdl:part name="parameters" element="tns:odgovor"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="odobriRtgs">
+    <wsdl:part name="parameters" element="tns:odobriSredstvaRtgs"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="odobriRtgsResponse">
+    <wsdl:part name="parameters" element="tns:odgovor"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="odobriClearing">
+    <wsdl:part name="parameters" element="tns:odobriSredstvaClearing"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="odobriClearingResponse">
+    <wsdl:part name="parameters" element="tns:odgovor"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="pokreniClearing">
+    <wsdl:part name="parameters" element="tns:pogonskaPoruka"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="pokreniClearingResponse">
+    <wsdl:part name="parameters" element="tns:odgovor"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PaymentService">
+    <wsdl:operation name="obradiNalog">
+      <wsdl:input message="tns:obradiNalog"/>
+      <wsdl:output message="tns:obradiNalogResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="prikaziPresjek">
+      <wsdl:input message="tns:prikaziPresjek"></wsdl:input>
+      <wsdl:output message="tns:prikaziPresjekResponse"></wsdl:output>
+      <wsdl:fault name="greska" message="tns:prikaziPresjekFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="odobriSredstvaRtgs">
+      <wsdl:input message="tns:odobriRtgs"></wsdl:input>
+      <wsdl:output message="tns:odobriRtgsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="odobriSredstvaClearing">
+      <wsdl:input message="tns:odobriClearing"></wsdl:input>
+      <wsdl:output message="tns:odobriClearingResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pokreniClearing">
+      <wsdl:input message="tns:pokreniClearing"></wsdl:input>
+      <wsdl:output message="tns:pokreniClearingResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PaymentServiceBinding" type="tns:PaymentService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="obradiNalog">
+      <soap:operation style="document" soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="prikaziPresjek">
+      <soap:operation style="document" soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="greska">
+        <soap:fault name="greska" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="odobriSredstvaRtgs">
+    <soap:operation style="document" soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="odobriSredstvaClearing">
+      <soap:operation style="document" soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pokreniClearing">
+      <soap:operation style="document" soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PaymentService">
+    <wsdl:port binding="tns:PaymentServiceBinding" name="PaymentPort">
+      <soap:address location="http://localhost:8080/PaymentPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

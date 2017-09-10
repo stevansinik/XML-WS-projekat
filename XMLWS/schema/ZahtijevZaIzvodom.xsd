@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/ZahtijevZaIzvodom" 
+	xmlns:tns="http://www.example.org/ZahtijevZaIzvodom" 
+	xmlns:zt="http://www.example.org/ZajednickiTipovi"
+ 	xmlns:bt="http://www.example.org/BankarskiTipovi"
+	elementFormDefault="qualified">
+<import namespace="http://www.example.org/ZajednickiTipovi" schemaLocation="ZajednickiTipovi.xsd"></import>
+<import namespace="http://www.example.org/BankarskiTipovi" schemaLocation="BankarskiTipovi.xsd"></import>
+<complexType name="Zahtijev">
+	<sequence>
+		<element name="broj_racuna" type="bt:brojRacuna"></element>
+		<element name="datum" type="date"></element>
+		<element name="redni_broj_presjeka" type="bt:redniBrojPresjeka"></element>
+	</sequence>
+</complexType>
+<element name="zahtijev" type="tns:Zahtijev"></element>
+</schema>

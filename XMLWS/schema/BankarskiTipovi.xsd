@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/BankarskiTipovi" 
+	xmlns:tns="http://www.example.org/BankarskiTipovi" 
+	elementFormDefault="qualified">
+	<simpleType name="swiftKod">
+		<restriction base="string">
+			<pattern value="[A-Z]{6}[A-Z0-9]{2}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="brojRacuna">
+		<restriction base="string">
+			<pattern value="[0-9]{18}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="brojModela">
+		<restriction base="int">
+			<minInclusive value="0"></minInclusive>
+			<maxInclusive value="99"></maxInclusive>
+		</restriction>
+	</simpleType>
+	<simpleType name="pozivNaBroj">
+		<restriction base="string">
+			<maxLength value="20"></maxLength>
+		</restriction>
+	</simpleType>
+	<simpleType name="novcaniIznos">
+		<restriction base="decimal">
+			<totalDigits value="17"></totalDigits>
+			<fractionDigits value="2"></fractionDigits>
+		</restriction>
+	</simpleType>
+	<simpleType name="oznakaValute">
+		<restriction base="string">
+			<maxLength value="3"></maxLength>
+		</restriction>
+	</simpleType>
+	<simpleType name="redniBrojPresjeka">
+		<restriction base="int">
+			<minInclusive value="0"></minInclusive>
+			<maxInclusive value="99"></maxInclusive>
+		</restriction>
+	</simpleType>
+</schema>

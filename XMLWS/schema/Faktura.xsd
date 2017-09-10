@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/Faktura"
+	xmlns:tns="http://www.example.org/Faktura"
+	xmlns:zt="http://www.example.org/ZajednickiTipovi"
+ 	xmlns:bt="http://www.example.org/BankarskiTipovi"
+	elementFormDefault="qualified">
+<import namespace="http://www.example.org/ZajednickiTipovi" schemaLocation="ZajednickiTipovi.xsd"></import>
+<import namespace="http://www.example.org/BankarskiTipovi" schemaLocation="BankarskiTipovi.xsd"></import>
+	<simpleType name="pib">
+		<restriction base="string">
+			<maxLength value="11"></maxLength>
+		</restriction>
+	</simpleType>
+	<simpleType name="brojRacuna">
+		<restriction base="int">
+			<minInclusive value="0"></minInclusive>
+			<maxInclusive value="999999"></maxInclusive>
+		</restriction>
+	</simpleType>
+	<simpleType name="redniBroj">
+		<restriction base="int">
+			<minInclusive value="0"></minInclusive>
+			<maxInclusive value="999"></maxInclusive>
+		</restriction>
+	</simpleType>
+	<simpleType name="nazivStavke">
+		<restriction base="string">
+			<maxLength value="120"></maxLength>
+		</restriction>
+	</simpleType>
+	<simpleType name="kolicinskaCijena">
+		<restriction base="decimal">
+			<totalDigits value="12"></totalDigits>
+			<fractionDigits value="2"></fractionDigits>
+		</restriction>
+	</simpleType>
+	<simpleType name="novcaniIznosStavke">
+		<restriction base="decimal">
+			<totalDigits value="14"></totalDigits>
+			<fractionDigits value="2"></fractionDigits>
+		</restriction>
+	</simpleType>
+	<simpleType name="procenat">
+		<restriction base="decimal">
+			<totalDigits value="7"></totalDigits>
+			<fractionDigits value="2"></fractionDigits>
+		</restriction>
+	</simpleType>
+	<simpleType name="jedinicaMjere">
+		<restriction base="string">
+			<maxLength value="6"></maxLength>
+		</restriction>
+	</simpleType>
+	<complexType name="Faktura">
+		<sequence>
+			<element name="zaglavlje" type="tns:Zaglavlje"></element>
+			<element name="stavke">
+				<complexType>
+					<sequence>
+						<element name="stavka" type="tns:Stavka" maxOccurs="unbounded"></element>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="Zaglavlje">
+		<sequence>
+			<element name="id_poruke" type="zt:id"></element>
+			<element name="naziv_dobavljaca" type="zt:dugackoIme"></element>
+			<element name="adresa_dobavljaca" type="zt:dugackoIme"></element>
+			<element name="pib_dobavljaca" type="tns:pib"></element>
+			<element name="naziv_kupca" type="zt:kratkoIme"></element>
+			<element name="adresa_kupca" type="zt:kratkoIme"></element>
+			<element name="pib_kupca" type="tns:pib"></element>
+			<element name="broj_racuna" type="tns:brojRacuna"></element>
+			<element name="datum_racuna" type="date"></element>
+			<element name="vrednost_roba" type="bt:novcaniIznos"></element>
+			<element name="vrednost_usluga" type="bt:novcaniIznos"></element>
+			<element name="ukupno_roba_i_usluga" type="bt:novcaniIznos"></element>
+			<element name="ukupan_rabat" type="bt:novcaniIznos"></element>
+			<element name="ukupan_porez" type="bt:novcaniIznos"></element>
+			<element name="oznaka_valute" type="bt:oznakaValute"></element>
+			<element name="iznos_za_uplatu" type="bt:novcaniIznos"></element>
+			<element name="uplata_na_racun" type="bt:brojRacuna"></element>
+			<element name="datum_valute" type="date"></element>
+		</sequence>
+	</complexType>
+	<complexType name="Stavka">
+		<sequence>
+			<element name="redni_broj" type="tns:redniBroj"></element>
+			<element name="naziv_robe_ili_usluge" type="tns:nazivStavke"></element>
+			<element name="kolicina" type="tns:kolicinskaCijena"></element>
+			<element name="jedinica_mjere" type="tns:jedinicaMjere"></element>
+			<element name="jedinicna_cena" type="tns:kolicinskaCijena"></element>
+			<element name="vrednost" type="tns:novcaniIznosStavke"></element>
+			<element name="procenat_rabata" type="tns:procenat"></element>
+			<element name="iznos_rabata" type="tns:novcaniIznosStavke"></element>
+			<element name="umanjeno_za_rabat" type="tns:novcaniIznosStavke"></element>
+			<element name="ukupan_porez" type="tns:novcaniIznosStavke"></element>
+		</sequence>
+	</complexType>
+	<element name="faktura" type="tns:Faktura"></element>
+</schema>

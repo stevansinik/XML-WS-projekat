@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/ZajednickiTipovi"
+	xmlns:tns="http://www.example.org/ZajednickiTipovi"
+	elementFormDefault="qualified">
+	<simpleType name="id">
+		<restriction base="string">
+			<maxLength value="50"></maxLength>
+		</restriction>
+	</simpleType>
+	<simpleType name="dugackoIme">
+		<restriction base="string">
+			<maxLength value="255"></maxLength>
+		</restriction>
+	</simpleType>
+	<simpleType name="kratkoIme">
+		<restriction base="string">
+			<maxLength value="55"></maxLength>
+		</restriction>
+	</simpleType>
+</schema>

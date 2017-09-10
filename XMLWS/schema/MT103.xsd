@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/MT103" 
+	xmlns:tns="http://www.example.org/MT103"
+	xmlns:zt="http://www.example.org/ZajednickiTipovi"
+	xmlns:bt="http://www.example.org/BankarskiTipovi"
+	elementFormDefault="qualified">
+<import namespace="http://www.example.org/ZajednickiTipovi" schemaLocation="ZajednickiTipovi.xsd"></import>
+<import namespace="http://www.example.org/BankarskiTipovi" schemaLocation="BankarskiTipovi.xsd"></import>
+<complexType name="MT103">
+	<sequence>
+		<element name="id_poruke" type="zt:id"></element>
+		<element name="swift_banke_duznika" type="bt:swiftKod"></element>
+		<element name="obracunski_racun_banke_duznika" type="bt:brojRacuna"></element>
+		<element name="swift_banke_primaoca" type="bt:swiftKod"></element>
+		<element name="obracunski_racun_banke_primaoca" type="bt:brojRacuna"></element>
+		<element name="duznik" type="zt:dugackoIme"></element>
+		<element name="svrha_placanja" type="zt:dugackoIme"></element>
+		<element name="primalac" type="zt:dugackoIme"></element>
+		<element name="datum_naloga" type="date"></element>
+		<element name="datum_valute" type="date"></element>
+		<element name="racun_duznika" type="bt:brojRacuna"></element>
+		<element name="model_zaduzenja" type="bt:brojModela"></element>
+		<element name="poziv_na_broj_zaduzenja" type="bt:pozivNaBroj"></element>
+		<element name="racun_primaoca" type="bt:brojRacuna"></element>
+		<element name="model_odobrenja" type="bt:brojModela"></element>
+		<element name="poziv_na_broj_odobrenja" type="bt:pozivNaBroj"></element>
+		<element name="iznos" type="bt:novcaniIznos"></element>
+		<element name="sifra_valute" type="bt:oznakaValute"></element>
+	</sequence>
+</complexType>
+<element name="mt103" type="tns:MT103"></element>
+</schema>

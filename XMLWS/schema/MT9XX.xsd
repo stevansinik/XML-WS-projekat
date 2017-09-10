@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/MT9XX" 
+	xmlns:tns="http://www.example.org/MT9XX"
+	xmlns:zt="http://www.example.org/ZajednickiTipovi"
+	xmlns:bt="http://www.example.org/BankarskiTipovi"
+	elementFormDefault="qualified">
+<import namespace="http://www.example.org/ZajednickiTipovi" schemaLocation="ZajednickiTipovi.xsd"></import>
+<import namespace="http://www.example.org/BankarskiTipovi" schemaLocation="BankarskiTipovi.xsd"></import>
+<complexType name="MT9XX">
+	<sequence>
+		<element name="id_poruke" type="zt:id"></element>
+		<element name="swift_kod_banke" type="bt:swiftKod"></element>
+		<element name="obracunski_racun" type="bt:brojRacuna"></element>
+		<element name="id_poruke_naloga" type="zt:id"></element>
+		<element name="datum_valute" type="date"></element>
+		<element name="iznos" type="bt:novcaniIznos"></element>
+		<element name="sifra_valute" type="bt:oznakaValute"></element>
+	</sequence>
+</complexType>
+</schema>

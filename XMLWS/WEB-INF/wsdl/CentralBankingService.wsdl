@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://www.nepostoji.org/CentralBankingService/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:mt102="http://www.example.org/MT102"
+	xmlns:mt103="http://www.example.org/MT103"
+	xmlns:mt900="http://www.example.org/MT900"
+	xmlns:odg="http://www.example.org/Odgovor"
+	name="CentralBankingService" 
+	targetNamespace="http://www.nepostoji.org/CentralBankingService/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.nepostoji.org/CentralBankingService/">
+      <xsd:import schemaLocation="./../../schema/MT102.xsd" namespace="http://www.example.org/MT102"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/MT103.xsd" namespace="http://www.example.org/MT103"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/MT900.xsd" namespace="http://www.example.org/MT900"></xsd:import>
+      <xsd:import schemaLocation="./../../schema/Odgovor.xsd" namespace="http://www.example.org/Odgovor"></xsd:import>
+      <xsd:complexType name="Rtgs">
+      	<xsd:sequence>
+      	  <xsd:element ref="mt103:mt103"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Clearing">
+      	<xsd:sequence>
+      	  <xsd:element ref="mt102:mt102"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Zaduzenje">
+      	<xsd:sequence>
+      	  <xsd:element ref="mt900:mt900"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Odgovor">
+      	<xsd:sequence>
+      	  <xsd:element name="odgovor" type="odg:Odgovor"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="rtgs" type="tns:Rtgs"></xsd:element>
+      <xsd:element name="clearing" type="tns:Clearing"></xsd:element>
+      <xsd:element name="odgovor" type="odg:Odgovor"></xsd:element>
+      <xsd:element name="poruka_o_zaduzenju" type="tns:Zaduzenje"></xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="rtgsRequest">
+    <wsdl:part element="tns:rtgs" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="rtgsResponse">
+    <wsdl:part element="tns:poruka_o_zaduzenju" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="clearingRequest">
+    <wsdl:part element="tns:clearing" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="clearingResponse">
+    <wsdl:part element="tns:poruka_o_zaduzenju" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="faultResponse">
+  	<wsdl:part element="tns:odgovor" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CentralBankingService">
+    <wsdl:operation name="rtgs">
+      <wsdl:input message="tns:rtgsRequest"/>
+      <wsdl:output message="tns:rtgsResponse"/>
+      <wsdl:fault name="greska" message="tns:faultResponse"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="clearing">
+      <wsdl:input message="tns:clearingRequest"></wsdl:input>
+      <wsdl:output message="tns:clearingResponse"></wsdl:output>
+      <wsdl:fault name="greska" message="tns:faultResponse"></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CentralBankingServiceBinding" type="tns:CentralBankingService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="rtgs">
+      <soap:operation soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="greska">
+        <soap:fault name="greska" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="clearing">
+      <soap:operation soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="greska">
+        <soap:fault name="greska" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CentralBankingService">
+    <wsdl:port binding="tns:CentralBankingServiceBinding" name="CentralBankingServicePort">
+      <soap:address location="http://localhost:8080/CentralBankingServicePort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

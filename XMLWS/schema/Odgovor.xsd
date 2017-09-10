@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/Odgovor" 
+	xmlns:tns="http://www.example.org/Odgovor" 
+	elementFormDefault="qualified">
+	<simpleType name="Ishod">
+		<restriction base="string">
+			<enumeration value="USPJESAN"></enumeration>
+			<enumeration value="NEUSPJESAN"></enumeration>
+		</restriction>
+	</simpleType>
+	<complexType name="Odgovor">
+		<sequence>
+			<element name="ishod" type="tns:Ishod"></element>
+			<element name="poruka" type="string"></element>
+		</sequence>
+	</complexType>
+</schema>

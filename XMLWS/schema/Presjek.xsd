@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+ xmlns="http://www.w3.org/2001/XMLSchema"
+ targetNamespace="http://www.example.org/Presjek" 
+ xmlns:tns="http://www.example.org/Presjek"
+ xmlns:zt="http://www.example.org/ZajednickiTipovi"
+ xmlns:bt="http://www.example.org/BankarskiTipovi"	
+ elementFormDefault="qualified">
+<import namespace="http://www.example.org/ZajednickiTipovi" schemaLocation="ZajednickiTipovi.xsd"></import>
+<import namespace="http://www.example.org/BankarskiTipovi" schemaLocation="BankarskiTipovi.xsd"></import>
+<simpleType name="brojPromjena">
+	<restriction base="int">
+		<totalDigits value="6"></totalDigits>
+	</restriction>
+</simpleType>
+<simpleType name="smer">
+	<restriction base="string">
+		<enumeration value="t"></enumeration>
+		<enumeration value="k"></enumeration>
+	</restriction>
+</simpleType>
+<complexType name="Zaglavlje">
+	<sequence>
+		<element name="broj_racuna" type="bt:brojRacuna"></element>
+		<element name="datum_naloga" type="dateTime"></element>
+		<element name="broj_presjeka" type="bt:redniBrojPresjeka"></element>
+		<element name="prethodno_stanje" type="bt:novcaniIznos"></element>
+		<element name="broj_promjena_u_korist" type="tns:brojPromjena"></element>
+		<element name="ukupno_u_korist" type="bt:novcaniIznos"></element>
+		<element name="broj_promjena_na_teret" type="tns:brojPromjena"></element>
+		<element name="ukupno_na_teret" type="bt:novcaniIznos"></element>
+		<element name="novo_stanje" type="bt:novcaniIznos"></element>
+	</sequence>
+</complexType>
+<complexType name="Stavka">
+	<sequence>
+		<element name="duznik" type="zt:dugackoIme"></element>
+		<element name="svrha_placanja" type="zt:dugackoIme"></element>
+		<element name="primalac" type="zt:dugackoIme"></element>
+		<element name="datum_naloga" type="dateTime"></element>
+		<element name="datum_valute" type="dateTime"></element>
+		<element name="racun_duznika" type="bt:brojRacuna"></element>
+		<element name="model_zaduzenja" type="bt:brojModela"></element>
+		<element name="poziv_na_broj_zaduzenja" type="bt:pozivNaBroj"></element>
+		<element name="racun_primaoca" type="bt:brojRacuna"></element>
+		<element name="model_odobrenja" type="bt:brojModela"></element>
+		<element name="poziv_na_broj_odobrenja" type="bt:pozivNaBroj"></element>
+		<element name="iznos" type="bt:novcaniIznos"></element>	
+		<element name="smer" type="tns:smer"></element>
+	</sequence>
+</complexType>
+<complexType name="Presjek">
+	<sequence>
+		<element name="zaglavlje" type="tns:Zaglavlje"></element>
+		<element name="stavke">
+			<complexType>
+				<sequence>
+					<element name="stavka" type="tns:Stavka" maxOccurs="unbounded"></element>
+				</sequence>
+			</complexType>
+		</element>
+	</sequence>	
+</complexType>
+<element name="presjek" type="tns:Presjek"></element>
+</schema>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/MT900" 
+	xmlns:tns="http://www.example.org/MT900" 
+	xmlns:mt="http://www.example.org/MT9XX"
+	elementFormDefault="qualified">
+<import namespace="http://www.example.org/MT9XX" schemaLocation="MT9XX.xsd"></import>
+<element name="mt900" type="mt:MT9XX"></element>
+</schema>
