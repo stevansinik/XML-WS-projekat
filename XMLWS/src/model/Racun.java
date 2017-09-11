@@ -20,6 +20,7 @@ import org.nepostoji.centralbankingservice.FaultResponse;
 import org.nepostoji.centralbankingservice.Rtgs;
 import org.nepostoji.centralbankingservice.Zaduzenje;
 
+import factory.Constructors;
 import factory.KeyFactory;
 
 public class Racun {
@@ -62,10 +63,8 @@ public class Racun {
 		if(drugiRacun.equals(this)) {
 			throw new Exception("Nije dozvoljena transakcija sa racuna na samog sebe");
 		}
-		if( (nalog.getRacunDuznika().equals(broj)) || (nalog.getRacunPrimaoca().equals(drugiRacun.broj)) ) {
+		if( (nalog.getRacunDuznika().equals(broj)) && (nalog.getRacunPrimaoca().equals(drugiRacun.broj)) ) {
 			uplatiNaRacun(nalog, drugiRacun);
-		} else if(nalog.getRacunDuznika().equals(drugiRacun.broj) || (nalog.getRacunPrimaoca().equals(broj)) ) {
-			uplatiSaRacuna(nalog, drugiRacun);
 		} else {
 			throw new Exception("Neispravni podaci o racunu duznika ili racunu primaoca");
 		}
@@ -92,8 +91,12 @@ public class Racun {
 		}
 	}
 	
-	public void uplatiSaRacuna(NalogZaPlacanje nalog, Racun racunDuznika) throws Exception {
-		racunDuznika.uplatiNaRacun(nalog, this);
+	public void uplatiOdobreno(NalogZaPlacanje nalog) throws Exception {
+		if( (nalog.getRacunPrimaoca().equals(broj)) && (nalog.getRacunDuznika()!=broj) ) {
+			promijeniStanje(nalog, Smer.K);
+		} else {
+			throw new Exception("Neispravni brojevi racuna duznika ili primaoca");
+		}
 	}
 	
 	public CentralBankingService dobaviServisCentralneBanke() {
@@ -118,25 +121,13 @@ public class Racun {
 	
 	public void izvrsiRtgs(NalogZaPlacanje nalog, Banka bankaPrimaoca) throws Exception {
         if( daLiJeHitan(nalog) ) {
-        	MT103 mt103 = new MT103();
-        	mt103.setIdPoruke(KeyFactory.nextKey().toString());
-        	mt103.setDuznik(nalog.getDuznik());
-        	mt103.setPrimalac(nalog.getPrimalac());
-        	mt103.setDatumNaloga(nalog.getDatumNaloga());
-        	mt103.setDatumValute(nalog.getDatumValute());
-        	mt103.setSvrhaPlacanja(nalog.getSvrhaPlacanja());
-        	mt103.setIznos(nalog.getIznos());
-        	mt103.setRacunDuznika(nalog.getRacunDuznika());
-        	mt103.setModelZaduzenja(nalog.getModelZaduzenja());
-        	mt103.setPozivNaBrojZaduzenja(nalog.getPozivNaBrojZaduzenja());
-        	mt103.setRacunPrimaoca(nalog.getRacunPrimaoca());
-        	mt103.setModelOdobrenja(nalog.getModelOdobrenja());
-        	mt103.setPozivNaBrojOdobrenja(nalog.getPozivNaBrojOdobrenja());
-        	mt103.setSwiftBankeDuznika(banka.getSwiftKod());
-        	mt103.setObracunskiRacunBankeDuznika(banka.getBrojObracunskogRacuna());
-        	mt103.setSwiftBankePrimaoca(bankaPrimaoca.getSwiftKod());
-        	mt103.setObracunskiRacunBankePrimaoca(bankaPrimaoca.getBrojObracunskogRacuna());
-        	mt103.setSifraValute(nalog.getOznakaValute());
+        	MT103 mt103 = Constructors.kreirajMT103(
+        			nalog.getDuznik(), nalog.getPrimalac(), nalog.getDatumNaloga(), nalog.getDatumValute(), 
+        			nalog.getSvrhaPlacanja(), nalog.getIznos(), nalog.getRacunDuznika(), nalog.getModelZaduzenja(), 
+        			nalog.getPozivNaBrojZaduzenja(), nalog.getRacunPrimaoca(), nalog.getModelOdobrenja(), 
+        			nalog.getPozivNaBrojOdobrenja(), banka.getSwiftKod(), 
+        			banka.getBrojObracunskogRacuna(), bankaPrimaoca.getSwiftKod(), 
+        			bankaPrimaoca.getBrojObracunskogRacuna(), nalog.getOznakaValute());
         	Rtgs rtgs = new Rtgs();
         	rtgs.setMt103(mt103);
         	
@@ -156,20 +147,11 @@ public class Racun {
 	}
 	
 	protected void promijeniStanje(NalogZaPlacanje nalog, Smer smer) {
-		Stavka novaTransakcija = new Stavka();
-		novaTransakcija.setDuznik(nalog.getDuznik());
-		novaTransakcija.setPrimalac(nalog.getPrimalac());
-		novaTransakcija.setDatumNaloga(nalog.getDatumNaloga());
-		novaTransakcija.setDatumValute(nalog.getDatumValute());
-		novaTransakcija.setRacunDuznika(nalog.getRacunDuznika());
-		novaTransakcija.setRacunPrimaoca(nalog.getRacunPrimaoca());
-		novaTransakcija.setSvrhaPlacanja(nalog.getSvrhaPlacanja());
-		novaTransakcija.setIznos(nalog.getIznos());
-		novaTransakcija.setModelZaduzenja(nalog.getModelZaduzenja());
-		novaTransakcija.setPozivNaBrojZaduzenja(nalog.getPozivNaBrojZaduzenja());
-		novaTransakcija.setModelOdobrenja(nalog.getModelOdobrenja());
-		novaTransakcija.setPozivNaBrojOdobrenja(nalog.getPozivNaBrojOdobrenja());
-		novaTransakcija.setSmer(smer);
+		Stavka novaTransakcija = Constructors.kreirajStavkuPresjeka(
+				nalog.getDuznik(), nalog.getPrimalac(), nalog.getDatumNaloga(), nalog.getDatumValute(), 
+				nalog.getRacunDuznika(), nalog.getRacunPrimaoca(), nalog.getSvrhaPlacanja(), nalog.getIznos(), 
+				nalog.getModelZaduzenja(), nalog.getPozivNaBrojZaduzenja(), nalog.getModelOdobrenja(), 
+				nalog.getPozivNaBrojOdobrenja(), smer);
 		presjek.getStavke().getStavka().add(novaTransakcija);
 		
 		Zaglavlje zagljavlje = presjek.getZaglavlje();

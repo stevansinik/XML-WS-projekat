@@ -153,6 +153,10 @@
 		</delete>
 	</target>
 	
+	<target name="gen-cb">
+		<wsdl2java file="WEB-INF/wsdl/CentralBankingService.wsdl"/>
+	</target>
+	
 	<target name="generate-code">
 		<echo level="info" message="Generating code using java2ws..."/>
 	    

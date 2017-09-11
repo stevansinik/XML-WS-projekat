@@ -6,15 +6,27 @@
 
 package org.nepostoji.paymentservice;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.example.mt102.MT102;
+import org.example.mt102.Stavka;
+import org.example.mt102.Zaglavlje;
+import org.example.mt103.MT103;
 import org.example.nalogzaplacanje.NalogZaPlacanje;
 import org.example.odgovor.Ishod;
 import org.example.odgovor.Odgovor;
 
-import factory.KeyFactory;
+import factory.Constructors;
 import model.Banka;
+import model.Data;
 import model.Racun;
 
 /**
@@ -33,9 +45,7 @@ import model.Racun;
                       
 public class PaymentServiceImpl implements PaymentService {
 	
-	private ConcurrentHashMap<String, Banka> banke = new ConcurrentHashMap<>();
-	private ConcurrentHashMap<String, Racun> racuni = new ConcurrentHashMap<>();
-
+	
     private static final Logger LOG = Logger.getLogger(PaymentServiceImpl.class.getName());
 
     /* (non-Javadoc)
@@ -46,8 +56,8 @@ public class PaymentServiceImpl implements PaymentService {
         System.out.println(parameters);
         try {
         	NalogZaPlacanje nalog = parameters.getNalog();
-        	Racun racunDuznika = racuni.get(nalog.getRacunDuznika());
-        	Racun racunPrimaoca = racuni.get(nalog.getRacunPrimaoca());
+        	Racun racunDuznika = Data.racuni.get(nalog.getRacunDuznika());
+        	Racun racunPrimaoca = Data.racuni.get(nalog.getRacunPrimaoca());
         	Odgovor odgovor = new Odgovor();
         	org.nepostoji.paymentservice.Odgovor _return = new org.nepostoji.paymentservice.Odgovor();
         	_return.odgovor = odgovor;
@@ -82,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
     public org.nepostoji.paymentservice.PorukaPresjeka prikaziPresjek(PorukaZahtijevaPresjeka parameters) throws PrikaziPresjekFault    { 
         LOG.info("Executing operation prikaziPresjek");
         System.out.println(parameters);
-        Racun trazeniRacun = racuni.get(parameters.getZahtijev().getBrojRacuna());
+        Racun trazeniRacun = Data.racuni.get(parameters.getZahtijev().getBrojRacuna());
         if(trazeniRacun==null) {
         	throw new PrikaziPresjekFault("Racun sa id: " + parameters.getZahtijev().getBrojRacuna() + " ne postoji");
         }
@@ -103,7 +113,46 @@ public class PaymentServiceImpl implements PaymentService {
      */
     public org.nepostoji.paymentservice.Odgovor pokreniClearing(PogonskaPoruka parameters) { 
         LOG.info("Executing operation pokreniClearing");
-        System.out.println("Poruka: " + parameters.getPoruka());
+        System.out.println("Poruka: " + parameters.getPoruka());        
+        Banka banka = Data.banke.get(parameters.getPoruka());
+        HashMap<String, MT102> poBankama = new HashMap<>(); 
+        if(banka!=null) {
+        	for(NalogZaPlacanje nalog : banka.getRedZaClearing()) {
+        		Racun racunPrimaoca = Data.racuni.get(nalog.getRacunPrimaoca());
+        		String swiftBankePrimaoca = racunPrimaoca.getBanka().getSwiftKod();
+        		MT102 mt102 = poBankama.get(swiftBankePrimaoca);
+        		if(mt102 == null) {
+        			mt102 = new MT102();
+        			mt102.setStavke(new org.example.mt102.MT102.Stavke());
+        			poBankama.put(swiftBankePrimaoca, mt102);
+        		}
+        		Stavka stavka = Constructors.kreirajStavkuKliringa(
+        				nalog.getDuznik(), nalog.getPrimalac(), nalog.getDatumNaloga(), nalog.getSvrhaPlacanja(),
+        				nalog.getIznos(), nalog.getRacunDuznika(), nalog.getModelZaduzenja(), nalog.getPozivNaBrojZaduzenja(), 
+        				nalog.getRacunPrimaoca(), nalog.getModelOdobrenja(), nalog.getPozivNaBrojOdobrenja(),
+        				nalog.getOznakaValute());
+        		mt102.getStavke().getStavka().add(stavka);
+        	}
+        	for(String swiftBankePrimaoca : poBankama.keySet()) {
+        		MT102 mt102 = poBankama.get(swiftBankePrimaoca);
+        		Banka bankaPrimaoca = Data.banke.get(swiftBankePrimaoca);
+        		BigDecimal ukupanIznos = BigDecimal.ZERO;
+        		for(Stavka stavka : mt102.getStavke().getStavka()) {
+        			ukupanIznos = ukupanIznos.add(stavka.getIznos());
+        		}
+        		GregorianCalendar gCal = new GregorianCalendar();
+        		gCal.setTime(new Date());
+        		XMLGregorianCalendar danas = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCal);
+        		Zaglavlje zaglavlje = Constructors.kreirajZaglavljeKliringa(
+    					parameters.getPoruka(), banka.getBrojObracunskogRacuna(),
+    					swiftBankePrimaoca, bankaPrimaoca.getBrojObracunskogRacuna(),
+    					danas, danas,
+    					"", ukupanIznos);
+        	}
+        	
+        } else {
+        	
+        }
         try {
             org.nepostoji.paymentservice.Odgovor _return = null;
             return _return;
@@ -119,8 +168,35 @@ public class PaymentServiceImpl implements PaymentService {
     public org.nepostoji.paymentservice.Odgovor odobriSredstvaClearing(PorukaOdobrenjaClearing parameters) { 
         LOG.info("Executing operation odobriSredstvaClearing");
         System.out.println(parameters);
+        Odgovor odgovor = new Odgovor();
+        Zaglavlje zaglavlje = parameters.getMt102().getZaglavlje();
+        odgovor.setIshod(Ishod.USPJESAN);
+        odgovor.setPoruka("");
+        for(Stavka stavka : parameters.getMt102().getStavke().getStavka()) {
+        	Racun racunPrimaoca = Data.racuni.get(stavka.getRacunPrimaoca());
+        	if(racunPrimaoca!=null) {
+        		NalogZaPlacanje nalog = Constructors.kreirajNalog(
+            			stavka.getDuznik(), stavka.getPrimalac(), stavka.getSvrhaPlacanja(),
+            			stavka.getDatumNaloga(), zaglavlje.getDatumValute(), stavka.getRacunDuznika(),
+            			stavka.getModelZaduzenja(), stavka.getPozivNaBrojZaduzenja(), stavka.getRacunPrimaoca(), 
+            			stavka.getModelOdobrenja(), stavka.getPozivNaBrojOdobrenja(), stavka.getIznos(),
+            			false, stavka.getSifraValute());
+        		try {
+        			racunPrimaoca.uplatiOdobreno(nalog);
+        		} catch (Exception e) {
+        			odgovor.setIshod(Ishod.NEUSPJESAN);
+        			odgovor.setPoruka("");
+        			break;
+        		}
+         	} else {
+         		odgovor.setIshod(Ishod.NEUSPJESAN);
+    			odgovor.setPoruka("");
+    			break;
+        	}
+        }
         try {
-            org.nepostoji.paymentservice.Odgovor _return = null;
+            org.nepostoji.paymentservice.Odgovor _return = new org.nepostoji.paymentservice.Odgovor();
+            _return.odgovor = odgovor;
             return _return;
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
@@ -134,10 +210,33 @@ public class PaymentServiceImpl implements PaymentService {
     public org.nepostoji.paymentservice.Odgovor odobriSredstvaRtgs(PorukaOdobrenjaRtgs parameters) { 
         LOG.info("Executing operation odobriSredstvaRtgs");
         System.out.println(parameters);
-        Racun racunDuznika = racuni.get(parameters.getMt103().getRacunDuznika());
-        Racun racunPovjerioca = racuni.get(parameters.getMt103().getRacunPrimaoca());
+        Racun racunPrimaoca = Data.racuni.get(parameters.getMt103().getRacunDuznika());
+        Odgovor odgovor = new Odgovor();
+        if(racunPrimaoca!=null) {
+        	MT103 mt103 = parameters.getMt103();
+            NalogZaPlacanje nalog = Constructors.kreirajNalog(
+            		mt103.getDuznik(), mt103.getPrimalac(), mt103.getSvrhaPlacanja(),
+            		mt103.getDatumNaloga(), mt103.getDatumValute(), mt103.getRacunDuznika(), 
+            		mt103.getModelZaduzenja(), mt103.getPozivNaBrojZaduzenja(), mt103.getRacunPrimaoca(),
+            		mt103.getModelOdobrenja(), mt103.getPozivNaBrojOdobrenja(), mt103.getIznos(), 
+            		mt103.getIznos().compareTo(new BigDecimal("250000.00")) < 0, mt103.getSifraValute());
+            try {
+    			racunPrimaoca.uplatiOdobreno(nalog);
+    			odgovor.setIshod(Ishod.USPJESAN);
+    			odgovor.setPoruka("");
+    		} catch (Exception e) {
+    			odgovor.setIshod(Ishod.NEUSPJESAN);
+    			odgovor.setPoruka("");
+    			e.printStackTrace();
+    		}
+        } else {
+        	odgovor.setIshod(Ishod.NEUSPJESAN);
+			odgovor.setPoruka("Racun sa id: " + parameters.getMt103().getRacunDuznika() + " ne postoji");
+			
+        }
         try {
-            org.nepostoji.paymentservice.Odgovor _return = null;
+            org.nepostoji.paymentservice.Odgovor _return = new org.nepostoji.paymentservice.Odgovor();
+            _return.setOdgovor(odgovor);
             return _return;
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();

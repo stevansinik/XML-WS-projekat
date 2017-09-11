@@ -5,19 +5,20 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.example.mt103.MT103;
 
 
 /**
- * <p>Java class for Odgovor complex type.
+ * <p>Java class for Rtgs complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Odgovor">
+ * &lt;complexType name="Rtgs">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="odgovor" type="{http://www.example.org/Odgovor}Odgovor"/>
+ *         &lt;element ref="{http://www.example.org/MT103}mt103"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,36 +28,36 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Odgovor", propOrder = {
-    "odgovor"
+@XmlType(name = "Rtgs", propOrder = {
+    "mt103"
 })
-public class Odgovor {
+public class Rtgs {
 
-    @XmlElement(required = true)
-    protected org.example.odgovor.Odgovor odgovor;
+    @XmlElement(namespace = "http://www.example.org/MT103", required = true)
+    protected MT103 mt103;
 
     /**
-     * Gets the value of the odgovor property.
+     * Gets the value of the mt103 property.
      * 
      * @return
      *     possible object is
-     *     {@link org.example.odgovor.Odgovor }
+     *     {@link MT103 }
      *     
      */
-    public org.example.odgovor.Odgovor getOdgovor() {
-        return odgovor;
+    public MT103 getMt103() {
+        return mt103;
     }
 
     /**
-     * Sets the value of the odgovor property.
+     * Sets the value of the mt103 property.
      * 
      * @param value
      *     allowed object is
-     *     {@link org.example.odgovor.Odgovor }
+     *     {@link MT103 }
      *     
      */
-    public void setOdgovor(org.example.odgovor.Odgovor value) {
-        this.odgovor = value;
+    public void setMt103(MT103 value) {
+        this.mt103 = value;
     }
 
 }

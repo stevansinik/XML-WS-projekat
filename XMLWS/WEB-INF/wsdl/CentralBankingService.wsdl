@@ -36,10 +36,16 @@
       	  <xsd:element name="odgovor" type="odg:Odgovor"></xsd:element>
       	</xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="PogonskaPoruka">
+        <xsd:sequence>
+          <xsd:element name="poruka" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:element name="rtgs" type="tns:Rtgs"></xsd:element>
       <xsd:element name="clearing" type="tns:Clearing"></xsd:element>
       <xsd:element name="odgovor" type="odg:Odgovor"></xsd:element>
       <xsd:element name="poruka_o_zaduzenju" type="tns:Zaduzenje"></xsd:element>
+      <xsd:element name="poruka" type="tns:PogonskaPoruka"></xsd:element>
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="rtgsRequest">
@@ -52,10 +58,16 @@
     <wsdl:part element="tns:clearing" name="parameters"/>
   </wsdl:message>
   <wsdl:message name="clearingResponse">
-    <wsdl:part element="tns:poruka_o_zaduzenju" name="parameters"/>
+    <wsdl:part element="tns:odgovor" name="parameters"/>
   </wsdl:message>
   <wsdl:message name="faultResponse">
   	<wsdl:part element="tns:odgovor" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="startClearingRequest">
+    <wsdl:part element="tns:poruka" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="startClearingResponse">
+    <wsdl:part element="tns:odgovor" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:portType name="CentralBankingService">
     <wsdl:operation name="rtgs">
@@ -66,7 +78,10 @@
     <wsdl:operation name="clearing">
       <wsdl:input message="tns:clearingRequest"></wsdl:input>
       <wsdl:output message="tns:clearingResponse"></wsdl:output>
-      <wsdl:fault name="greska" message="tns:faultResponse"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="startClearing">
+      <wsdl:input message="tns:startClearingRequest"></wsdl:input>
+      <wsdl:output message="tns:startClearingResponse"></wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="CentralBankingServiceBinding" type="tns:CentralBankingService">
@@ -91,9 +106,15 @@
       <wsdl:output>
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="greska">
-        <soap:fault name="greska" use="literal"/>
-      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="startClearing">
+      <soap:operation soapAction=""/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="CentralBankingService">

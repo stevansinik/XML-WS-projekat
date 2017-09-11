@@ -5,19 +5,20 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.example.mt102.MT102;
 
 
 /**
- * <p>Java class for Odgovor complex type.
+ * <p>Java class for Clearing complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Odgovor">
+ * &lt;complexType name="Clearing">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="odgovor" type="{http://www.example.org/Odgovor}Odgovor"/>
+ *         &lt;element ref="{http://www.example.org/MT102}mt102"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,36 +28,36 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Odgovor", propOrder = {
-    "odgovor"
+@XmlType(name = "Clearing", propOrder = {
+    "mt102"
 })
-public class Odgovor {
+public class Clearing {
 
-    @XmlElement(required = true)
-    protected org.example.odgovor.Odgovor odgovor;
+    @XmlElement(namespace = "http://www.example.org/MT102", required = true)
+    protected MT102 mt102;
 
     /**
-     * Gets the value of the odgovor property.
+     * Gets the value of the mt102 property.
      * 
      * @return
      *     possible object is
-     *     {@link org.example.odgovor.Odgovor }
+     *     {@link MT102 }
      *     
      */
-    public org.example.odgovor.Odgovor getOdgovor() {
-        return odgovor;
+    public MT102 getMt102() {
+        return mt102;
     }
 
     /**
-     * Sets the value of the odgovor property.
+     * Sets the value of the mt102 property.
      * 
      * @param value
      *     allowed object is
-     *     {@link org.example.odgovor.Odgovor }
+     *     {@link MT102 }
      *     
      */
-    public void setOdgovor(org.example.odgovor.Odgovor value) {
-        this.odgovor = value;
+    public void setMt102(MT102 value) {
+        this.mt102 = value;
     }
 
 }
