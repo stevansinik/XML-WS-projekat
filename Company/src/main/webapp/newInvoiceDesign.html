@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+  		<script src="node_modules/jquery/dist/jquery.js"></script>
+  		<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+		<title>Firma Nova Faktura</title>
+		<style type="text/css">
+			.bordered {
+				border: 1px solid blue;
+				border-radius: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-sm-6">
+									<h3>Dobavljac</h3>
+									<label class="control-label col-sm-2" for="email">Naziv:</label>
+									<div class="col-sm-10">
+										<p class="form-control-static">Ime</p>
+									</div>
+									<label class="control-label col-sm-2" for="email">Adresa:</label>
+									<div class="col-sm-10">
+										<p class="form-control-static">Adresa</p>
+									</div>
+									<label class="control-label col-sm-2" for="email">Pib:</label>
+									<div class="col-sm-10">
+										<p class="form-control-static">Pib</p>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<h3>Kupac</h3>
+									<label class="control-label col-sm-2" for="email">Naziv:</label>
+									<div class="col-sm-10">
+										<select class="form-control">
+											<option>Prva</option>
+											<option>Druga</option>
+										</select>
+									</div>
+									<label class="control-label col-sm-2" for="email">Adresa:</label>
+									<div class="col-sm-10">
+										<p class="form-control-static">Adresa</p>
+									</div>
+									<label class="control-label col-sm-2" for="email">Pib:</label>
+									<div class="col-sm-10">
+										<p class="form-control-static">Pib</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<h3>Vrijednost</h3>
+							<label class="control-label col-sm-2" for="email">Robe:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">xxx</p>
+							</div>
+							<label class="control-label col-sm-2" for="email">Usluga:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">yyy</p>
+							</div>
+							<label class="control-label col-sm-2" for="email">Robe i usluga:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">zzzz</p>
+							</div>
+							<label class="control-label col-sm-2" for="email">Ukupan rabat:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">tt</p>
+							</div>
+							<label class="control-label col-sm-2" for="email">Ukupan porez:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">ss</p>
+							</div>
+							<label class="control-label col-sm-2" for="email">Za uplatu:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">wwwww</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<h3>Uplata</h3>
+							<label class="control-label col-sm-2" for="email">Racun:</label>
+							<div class="col-sm-10">
+								<select class="form-control">
+									<option>1</option>
+									<option>2</option>
+								</select>
+							</div>
+							<label class="control-label col-sm-2" for="email">Valuta:</label>
+							<div class="col-sm-10">
+								<p class="form-control-static">RSD</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Submit</button>
+							</div>
+						</div>
+					</form>
+				</div> 
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+				    	<div class="panel-heading"><h4>Dobavljac</h4></div>
+				    	<div class="panel-body">
+							<div class="form-horizontal">
+								<label class="control-label col-sm-4" for="email">Naziv:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Ime</p>
+								</div>
+								<label class="control-label col-sm-4" for="email">Adresa:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Adresa</p>
+								</div>
+								<label class="control-label col-sm-4" for="email">Pib:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Pib</p>
+								</div>
+							</div>							
+						</div>
+				    </div>
+				</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+				    	<div class="panel-heading"><h4>Kupac</h4></div>
+				    	<div class="panel-body">
+							<div class="form-horizontal">
+								<label class="control-label col-sm-4" for="email">Naziv:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Ime</p>
+								</div>
+								<label class="control-label col-sm-4" for="email">Adresa:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Adresa</p>
+								</div>
+								<label class="control-label col-sm-4" for="email">Pib:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Pib</p>
+								</div>
+							</div>							
+						</div>
+				    </div>
+				</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+				    	<div class="panel-heading"><h4>Vrijednost</h4></div>
+				    	<div class="panel-body">
+							<div class="form-horizontal">
+								<label class="control-label col-sm-3" for="email">Robe:</label>
+								<div class="col-sm-9">
+									<p class="form-control-static">xxx</p>
+								</div>
+								<label class="control-label col-sm-3" for="email">Usluga:</label>
+								<div class="col-sm-9">
+									<p class="form-control-static">yyy</p>
+								</div>
+								<label class="control-label col-sm-3" for="email">Robe i usluga:</label>
+								<div class="col-sm-9">
+									<p class="form-control-static">zzzz</p>
+								</div>
+								<label class="control-label col-sm-3" for="email">Ukupan rabat:</label>
+								<div class="col-sm-9">
+									<p class="form-control-static">tt</p>
+								</div>
+								<label class="control-label col-sm-3" for="email">Ukupan porez:</label>
+								<div class="col-sm-9">
+									<p class="form-control-static">ss</p>
+								</div>
+								<label class="control-label col-sm-3" for="email">Za uplatu:</label>
+								<div class="col-sm-9">
+									<p class="form-control-static">wwwww</p>
+								</div>
+							</div>							
+						</div>
+				    </div>
+				</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+				    	<div class="panel-heading"><h4>Uplata na racun</h4></div>
+				    	<div class="panel-body">
+							<div class="form-horizontal">
+								<label class="control-label col-sm-4" for="email">Broj:</label>
+								<div class="col-sm-8">
+									<select class="form-control">
+										<option>1</option>
+										<option>2</option>
+									</select>
+								</div>
+								<label class="control-label col-sm-4" for="email">Valuta:</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<div class="col-sm-offset-4 col-sm-3">
+									<button class="btn btn-lg btn-success">Posalji Fakturu</button>
+								</div>
+							</div>							
+						</div>
+				    </div>
+				</div>
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+				    	<div class="panel-heading"><h4>Komande</h4></div>
+				    	<div class="panel-body">
+							<div class="form-horizontal">
+								<div class="col-sm-offset-10">
+									<button class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus"></span> Nova Stavka</button>
+								</div>
+							</div>							
+						</div>
+				    </div>
+				</div>
+			</div>
+			<div class="row>
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+				    	<div class="panel-heading clearfix">
+							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Stavka #1</h4>
+							 <div class="btn-group pull-right">
+							  <a type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-up"></span></a>
+							  <a type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-down"></span></a>
+							  <a type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></a>
+							</div>
+						</div>
+				    	<div class="panel-body">
+							<div class="form-horizontal">
+								<label class="control-label col-sm-2" for="email">Kolicina:</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control">
+								</div>
+								<label class="control-label col-sm-2" for="email">Jedinicna cijena:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Vrijednost:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Procenat rabata:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Iznos rabata:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Ukupan rabat:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Umanjeno za rabat:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Ukupan porez:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+								<label class="control-label col-sm-2" for="email">Jedinica mjere:</label>
+								<div class="col-sm-10">
+									<p class="form-control-static">RSD</p>
+								</div>
+							</div>							
+						</div>
+				    </div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var companies = {};
+		</script>
+	</body>
+</html>

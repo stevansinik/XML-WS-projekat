@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://www.example.org/CentralBanking/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:mt102="http://www.example.org/MT102"
+	xmlns:mt103="http://www.example.org/MT103"
+	xmlns:mt900="http://www.example.org/MT900" 
+	name="CentralBanking" 
+	targetNamespace="http://www.example.org/CentralBanking/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/CentralBanking/">
+      <xsd:import schemaLocation="https://www.dropbox.com/s/ibkgqxk1jietjgd/MT102.xsd?dl=1"></xsd:import>
+      <xsd:import schemaLocation="https://www.dropbox.com/s/1gnampn936i1pjc/MT103.xsd?dl=1"></xsd:import>
+      <xsd:import schemaLocation="https://www.dropbox.com/s/jq99tijzpi2vtcd/MT900.xsd?dl=1"></xsd:import>
+      <xsd:complexType name="RTGS">
+      	<xsd:sequence>
+      	  <xsd:element ref="mt103:mt103"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RTGS_RESPONSE">
+        <xsd:sequence>
+          <xsd:element ref="mt900:mt900"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CLEARING">
+        <xsd:sequence>
+          <xsd:element ref="mt102:mt102"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CLEARING_RESPONSE">
+        <xsd:sequence>
+          <xsd:element name="response" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="rtgs" type="tns:RTGS"></xsd:element>
+      <xsd:element name="rtgsResponse" type="tns:RTGS_RESPONSE"></xsd:element>
+      <xsd:element name="clearing"></xsd:element>
+      <xsd:element name="clearingResponse"></xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="rtgsRequest">
+    <wsdl:part name="parameters" element="tns:rtgs"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="rtgsResponse">
+    <wsdl:part name="parameters" element="tns:rtgsResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="clearingRequest"></wsdl:message>
+  <wsdl:message name="clearingResponse"></wsdl:message>
+  <wsdl:portType name="CentralBanking">
+    <wsdl:operation name="rtgs">
+      <wsdl:input message="tns:rtgsRequest"></wsdl:input>
+      <wsdl:output message="tns:rtgsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="clearing">
+      <wsdl:input message="tns:clearingRequest"></wsdl:input>
+      <wsdl:output message="tns:clearingResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CentralBankingSOAP" type="tns:CentralBanking">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="rtgs">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://www.example.org/CentralBanking/"/>
+      </wsdl:input>
+      <wsdl:output>
+      	<soap:body use="literal" namespace="http://www.example.org/CentralBanking/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="clearing">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://www.example.org/CentralBanking/"/>
+      </wsdl:input>
+      <wsdl:output>
+      	<soap:body use="literal" namespace="http://www.example.org/CentralBanking/"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CentralBanking">
+    <wsdl:port binding="tns:CentralBankingSOAP" name="CentralBankingSOAP">
+      <soap:address location="http://localhost:8080/CentralBankingService/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
